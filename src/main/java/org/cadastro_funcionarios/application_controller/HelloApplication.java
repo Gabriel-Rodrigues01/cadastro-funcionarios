@@ -1,4 +1,4 @@
-package org.cadastro_funcionarios;
+package org.cadastro_funcionarios.application_controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
