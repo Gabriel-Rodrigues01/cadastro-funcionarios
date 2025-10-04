@@ -63,6 +63,29 @@ public class FuncionarioRepository {
         }
     }
 
+    public void saveAll() throws IOException {
+        try (BufferedWriter bw = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING)) {
+            for (Funcionario f : storage.values()) {
+                bw.write(f.toCsvLine());
+                bw.newLine();
+            }
+        }
+    }
 
+    public List<Funcionario> findAll() {
+        return new ArrayList<>(storage.values());
+    }
+
+    public Optional<Funcionario> findByMatricula(String matricula) {
+        return Optional.ofNullable(storage.get(matricula));
+    }
+
+    public void add(Funcionario funcionario) {
+        storage.put(funcionario.getMatricula(), funcionario);
+    }
+
+    public void remove(String matricula) {
+        storage.remove(matricula);
+    }
 
 }
