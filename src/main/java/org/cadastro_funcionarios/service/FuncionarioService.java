@@ -14,10 +14,10 @@ public class FuncionarioService {
         this.repository = repository;
     }
 
-    // --- Requisito 1: Cadastrar (com Validação) ---
+    // VALIDA O CADASTRO
+    //CONDINÇÕES   PRA REGRA DE NEGOCIO FUNCIONAR
     public void cadastrar(Funcionario funcionario) throws IllegalArgumentException {
 
-        // 1. Validação de Regras de Negócio
         if (!Validador.validarMatricula(funcionario.getMatricula())) {
             throw new IllegalArgumentException("Matrícula Inválida. Use 6 dígitos numéricos.");
         }
@@ -33,26 +33,26 @@ public class FuncionarioService {
         if (!Validador.validarCEP(funcionario.getEndereco().getCep())) {
             throw new IllegalArgumentException("CEP Inválido. Use o formato XXXXX-XXX.");
         }
-        // Adicione outras validações (CPF, Matrícula Duplicada, etc.)
 
-        // 2. Persistência
+
+
         repository.adicionar(funcionario);
     }
 
-    // --- Requisito 1: Excluir ---
+
     public boolean excluir(String matricula) {
         return repository.excluir(matricula);
     }
 
-    // --- Requisito 1: Consultar ---
+
     public Optional<Funcionario> consultarPorMatricula(String matricula) {
         return repository.buscarPorMatricula(matricula);
     }
 
-    // --- Requisito 1: Listar Todos ---
+
     public List<Funcionario> listarTodos() {
         return repository.listarTodos();
     }
 
-    // NOTA: Os métodos de Relatório (Stream API) seriam implementados aqui ou chamados da classe ReportUtils.
+
 }

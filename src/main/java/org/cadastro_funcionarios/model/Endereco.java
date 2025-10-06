@@ -19,18 +19,16 @@ public class Endereco {
         this.cep = cep;
     }
 
-    // --- GETTERS (Requisitados por FuncionarioRepository e ReportUtils) ---
+
     public String getLogradouro() { return logradouro; }
     public String getNumero() { return numero; }
     public String getComplemento() { return complemento; }
     public String getBairro() { return bairro; }
-    // O ReportUtils precisava deste:
     public String getCidade() { return cidade; }
-    // O ReportUtils pode precisar deste:
     public String getEstado() { return estado; }
     public String getCep() { return cep; }
 
-    // Método de persistência CSV (separado por ponto-e-vírgula)
+    //METODO QUE ORGANIZA O CSV PRA NÃO APAGAR (PRA NÃO FICAR JOGADO AOS CARALHOS E SUMIR)
     public String toCSV() {
         return String.join(";", logradouro, numero, complemento, bairro, cidade, estado, cep);
     }

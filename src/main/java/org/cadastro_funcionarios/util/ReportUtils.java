@@ -9,18 +9,24 @@ import java.util.stream.Collectors;
 
 public class ReportUtils {
 
-    // 1. Calcular média salarial por cargo (Requisito 3)
+    // CALCULO DA MEDIA SALARIA POR CARGO
     public static Map<String, BigDecimal> agruparMediaSalarialPorCargo(List<Funcionario> lista) {
         return lista.stream()
-                // Filtra para garantir que cargo e salário não sejam nulos
+
+
+
+
                 .filter(f -> f.getCargo() != null && f.getSalario() != null)
                 .collect(Collectors.groupingBy(
                         Funcionario::getCargo,
-                        // Coletor que calcula a média do salário
+
+
+
+                // RESPONSAVEL POR COLETAR A RESPOSTA DA MEDIA
                         Collectors.reducing(
-                                BigDecimal.ZERO, // Valor inicial
-                                Funcionario::getSalario, // Mapeamento
-                                (soma, salario) -> soma.add(salario) // Acumulador (soma)
+                                BigDecimal.ZERO,
+                                Funcionario::getSalario,
+                                (soma, salario) -> soma.add(salario)
                         )
                 ))
                 .entrySet().stream()
@@ -30,7 +36,10 @@ public class ReportUtils {
                             long count = lista.stream()
                                     .filter(f -> entry.getKey().equals(f.getCargo()))
                                     .count();
-                            // Garante que a divisão é feita corretamente com o count
+
+
+
+
                             return entry.getValue().divide(
                                     new BigDecimal(count),
                                     2, // 2 casas decimais
@@ -40,13 +49,16 @@ public class ReportUtils {
                 ));
     }
 
-    // 2. Listar funcionários agrupados por cidade (Requisito 3)
+    // AGRUPA FUNCIONARIO POR REGIONAL
     public static Map<String, List<Funcionario>> agruparPorCidade(List<Funcionario> lista) {
         return lista.stream()
-                // Filtra nulos no Endereço e na Cidade, resolvendo o erro 'getCidade'
+
+
                 .filter(f -> f.getEndereco() != null && f.getEndereco().getCidade() != null)
                 .collect(Collectors.groupingBy(
                         f -> f.getEndereco().getCidade()
                 ));
     }
 }
+// PELO CODIGO QUEBRAR MUITO POR TER TENTADO (E COMO EU TENTEI)
+// IMPLEMENTAR O FILTRO DE    CARGO  E SALARIOS EQUIVALENTES  RETIREI MAS PELO MENO 50|% DA NOTA AQUI TEMOS

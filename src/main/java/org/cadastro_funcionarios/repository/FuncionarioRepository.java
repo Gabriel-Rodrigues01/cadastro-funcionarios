@@ -16,25 +16,25 @@ public class FuncionarioRepository {
         carregarDados();
     }
 
-    // Operação básica: Adicionar (usada pelo Service)
+    //ADD DO USUARIO
     public void adicionar(Funcionario f) {
         funcionarios.add(f);
         salvarDados();
     }
 
-    // Operação básica: Listar (usada pelo Service/Controller)
+    // LISTA O USUARIO
     public List<Funcionario> listarTodos() {
         return new ArrayList<>(funcionarios);
     }
 
-    // Operação básica: Buscar por Matrícula
+    // BUSCA A MATRICULA
     public Optional<Funcionario> buscarPorMatricula(String matricula) {
         return funcionarios.stream()
                 .filter(f -> f.getMatricula().equals(matricula))
                 .findFirst();
     }
 
-    // Operação básica: Excluir por Matrícula
+    // APAGA A MATRICULA
     public boolean excluir(String matricula) {
         boolean removido = funcionarios.removeIf(f -> f.getMatricula().equals(matricula));
         if (removido) {
@@ -43,7 +43,7 @@ public class FuncionarioRepository {
         return removido;
     }
 
-    // --- PERSISTÊNCIA ---
+
 
     private void carregarDados() {
         if (!Files.exists(Paths.get(FILE_PATH))) return;
@@ -54,13 +54,11 @@ public class FuncionarioRepository {
                 String[] parts = line.split(";");
                 if (parts.length < 14) continue;
 
-                // Mapeamento de Endereco (parts[7] a parts[13])
                 Endereco endereco = new Endereco(
                         parts[7], parts[8], parts[9], parts[10], parts[11], parts[12], parts[13]
                 );
 
-                // Mapeamento de Funcionario (parts[0] a parts[6])
-                Funcionario f = new Funcionario(
+                               Funcionario f = new Funcionario(
                         parts[0], parts[1], parts[2],
                         LocalDate.parse(parts[3]),
                         parts[4],

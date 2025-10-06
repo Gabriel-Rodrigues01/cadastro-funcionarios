@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Funcionario {
-    private String matricula; // identificador único
+    private String matricula;
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
     private String cargo;
     private BigDecimal salario;
     private LocalDate dataContratacao;
-    private Endereco endereco; // Composição
+    private Endereco endereco;
 
     public Funcionario(String matricula, String nome, String cpf, LocalDate dataNascimento, String cargo, BigDecimal salario, LocalDate dataContratacao, Endereco endereco) {
         this.matricula = matricula;
@@ -24,7 +24,6 @@ public class Funcionario {
         this.endereco = endereco;
     }
 
-    // --- GETTERS (RESOLVEM TODOS OS ERROS 'cannot find symbol method') ---
     public String getMatricula() { return matricula; }
     public String getNome() { return nome; }
     public String getCpf() { return cpf; }
@@ -34,7 +33,9 @@ public class Funcionario {
     public LocalDate getDataContratacao() { return dataContratacao; }
     public Endereco getEndereco() { return endereco; } // Requisitado pelo ReportUtils
 
-    // Método de persistência CSV (usado pelo Repositório)
+
+
+    //METODO QUE ORGANIZA O CSV PRA NÃO APAGAR (PRA NÃO FICAR JOGADO AOS CARALHOS E SUMIR)
     public String toCSV() {
         return String.join(";",
                 matricula, nome, cpf, dataNascimento.toString(), cargo, salario.toString(),
