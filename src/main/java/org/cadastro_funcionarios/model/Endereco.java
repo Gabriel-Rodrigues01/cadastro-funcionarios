@@ -9,6 +9,7 @@ public class Endereco {
     private String estado;
     private String cep;
 
+    // Construtor Completo
     public Endereco(String logradouro, String numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.logradouro = logradouro;
         this.numero = numero;
@@ -19,7 +20,7 @@ public class Endereco {
         this.cep = cep;
     }
 
-    // --- GETTERS (RESOLVE getCidade() e getEstado()) ---
+    // --- GETTERS (CRUCIAIS) ---
     public String getLogradouro() { return logradouro; }
     public String getNumero() { return numero; }
     public String getComplemento() { return complemento; }
