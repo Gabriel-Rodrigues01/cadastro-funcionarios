@@ -4,16 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Funcionario {
-    private String matricula;
+    private String matricula; // identificador único
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
     private String cargo;
     private BigDecimal salario;
     private LocalDate dataContratacao;
-    private Endereco endereco;
+    private Endereco endereco; // Composição
 
-    // Construtor Completo
     public Funcionario(String matricula, String nome, String cpf, LocalDate dataNascimento, String cargo, BigDecimal salario, LocalDate dataContratacao, Endereco endereco) {
         this.matricula = matricula;
         this.nome = nome;
@@ -25,20 +24,21 @@ public class Funcionario {
         this.endereco = endereco;
     }
 
-    // --- GETTERS (CRUCIAIS) ---
+    // --- GETTERS (RESOLVEM TODOS OS ERROS 'cannot find symbol method') ---
     public String getMatricula() { return matricula; }
     public String getNome() { return nome; }
     public String getCpf() { return cpf; }
     public LocalDate getDataNascimento() { return dataNascimento; }
-    public String getCargo() { return cargo; }
-    public BigDecimal getSalario() { return salario; }
+    public String getCargo() { return cargo; } // Requisitado pelo ReportUtils
+    public BigDecimal getSalario() { return salario; } // Requisitado pelo ReportUtils
     public LocalDate getDataContratacao() { return dataContratacao; }
-    public Endereco getEndereco() { return endereco; }
+    public Endereco getEndereco() { return endereco; } // Requisitado pelo ReportUtils
 
-    // Método para formatar para o CSV
+    // Método de persistência CSV (usado pelo Repositório)
     public String toCSV() {
-        return matricula + ";" + nome + ";" + cpf + ";" + dataNascimento.toString() + ";" +
-                cargo + ";" + salario.toString() + ";" + dataContratacao.toString() + ";" +
-                endereco.toString();
+        return String.join(";",
+                matricula, nome, cpf, dataNascimento.toString(), cargo, salario.toString(),
+                dataContratacao.toString(), endereco.toCSV()
+        );
     }
 }

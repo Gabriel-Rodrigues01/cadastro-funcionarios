@@ -2,12 +2,9 @@ package org.cadastro_funcionarios.service;
 
 import org.cadastro_funcionarios.model.Funcionario;
 import org.cadastro_funcionarios.repository.FuncionarioRepository;
-import org.cadastro_funcionarios.util.Validador; // AGORA FUNCIONA
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import org.cadastro_funcionarios.util.Validador;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class FuncionarioService {
 
@@ -17,28 +14,45 @@ public class FuncionarioService {
         this.repository = repository;
     }
 
-    public void cadastrar(Funcionario f) throws Exception {
-        // Validação (agora usa o Validador e os Getters)
-        if (!Validador.validarMatricula(f.getMatricula())) {
-            throw new IllegalArgumentException("Matrícula inválida. Use 6 dígitos.");
+    // --- Requisito 1: Cadastrar (com Validação) ---
+    public void cadastrar(Funcionario funcionario) throws IllegalArgumentException {
+
+        // 1. Validação de Regras de Negócio
+        if (!Validador.validarMatricula(funcionario.getMatricula())) {
+            throw new IllegalArgumentException("Matrícula Inválida. Use 6 dígitos numéricos.");
         }
-        if (!Validador.validarIdadeMinima(f.getDataNascimento(), 18)) {
+        if (!Validador.validarNome(funcionario.getNome())) {
+            throw new IllegalArgumentException("Nome Inválido. Deve ter no mínimo 3 caracteres.");
+        }
+        if (!Validador.validarIdadeMinima(funcionario.getDataNascimento(), 18)) {
             throw new IllegalArgumentException("Funcionário deve ter no mínimo 18 anos.");
         }
-        // ...
+        if (!Validador.validarSalario(funcionario.getSalario())) {
+            throw new IllegalArgumentException("Salário deve ser um valor positivo.");
+        }
+        if (!Validador.validarCEP(funcionario.getEndereco().getCep())) {
+            throw new IllegalArgumentException("CEP Inválido. Use o formato XXXXX-XXX.");
+        }
+        // Adicione outras validações (CPF, Matrícula Duplicada, etc.)
 
-        repository.adicionar(f);
+        // 2. Persistência
+        repository.adicionar(funcionario);
     }
 
-    // Método de Relatório Exemplo (CORRIGE o erro de Deprecated)
-    public Map<String, Double> calcularMediaSalarialPorCargo() {
-        return repository.listarTodos().stream()
-                .collect(Collectors.groupingBy(
-                        Funcionario::getCargo,
-                        Collectors.averagingDouble(f -> f.getSalario().doubleValue())
-                ));
+    // --- Requisito 1: Excluir ---
+    public boolean excluir(String matricula) {
+        return repository.excluir(matricula);
     }
 
-    // Se você tiver um método agruparPorCidade() em ReportUtils, ele funcionará
-    // porque f.getEndereco().getCidade() agora existe no Endereco.java
+    // --- Requisito 1: Consultar ---
+    public Optional<Funcionario> consultarPorMatricula(String matricula) {
+        return repository.buscarPorMatricula(matricula);
+    }
+
+    // --- Requisito 1: Listar Todos ---
+    public List<Funcionario> listarTodos() {
+        return repository.listarTodos();
+    }
+
+    // NOTA: Os métodos de Relatório (Stream API) seriam implementados aqui ou chamados da classe ReportUtils.
 }

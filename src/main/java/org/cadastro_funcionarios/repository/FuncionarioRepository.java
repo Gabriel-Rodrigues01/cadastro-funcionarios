@@ -1,15 +1,14 @@
 package org.cadastro_funcionarios.repository;
 
-import org.cadastro_funcionarios.model.Funcionario;
 import org.cadastro_funcionarios.model.Endereco;
+import org.cadastro_funcionarios.model.Funcionario;
 import java.io.*;
-import java.nio.file.*;
 import java.math.BigDecimal;
+import java.nio.file.*;
 import java.time.LocalDate;
 import java.util.*;
 
 public class FuncionarioRepository {
-    // Caminho do arquivo CSV (será criado na raiz do projeto)
     private static final String FILE_PATH = "funcionarios.csv";
     private final List<Funcionario> funcionarios = new ArrayList<>();
 
@@ -17,30 +16,35 @@ public class FuncionarioRepository {
         carregarDados();
     }
 
-    // Método que o FuncionarioService está tentando chamar (RESOLVE O ÚLTIMO ERRO)
+    // Operação básica: Adicionar (usada pelo Service)
     public void adicionar(Funcionario f) {
-        // 1. Adiciona o novo funcionário à lista em memória
         funcionarios.add(f);
-        // 2. Salva todos os dados atualizados no arquivo CSV
         salvarDados();
     }
 
-    // Método necessário para o Service (Relatórios e consultas)
+    // Operação básica: Listar (usada pelo Service/Controller)
     public List<Funcionario> listarTodos() {
-        // Retorna uma cópia para proteger a lista interna de modificações externas
         return new ArrayList<>(funcionarios);
     }
 
-    // Método CRUD básico para buscar por Matrícula (Útil para checar duplicidade)
+    // Operação básica: Buscar por Matrícula
     public Optional<Funcionario> buscarPorMatricula(String matricula) {
         return funcionarios.stream()
                 .filter(f -> f.getMatricula().equals(matricula))
                 .findFirst();
     }
 
-    // --- MÉTODOS DE PERSISTÊNCIA (LÓGICA INTERNA) ---
+    // Operação básica: Excluir por Matrícula
+    public boolean excluir(String matricula) {
+        boolean removido = funcionarios.removeIf(f -> f.getMatricula().equals(matricula));
+        if (removido) {
+            salvarDados();
+        }
+        return removido;
+    }
 
-    // Carrega todos os funcionários do arquivo CSV para a memória
+    // --- PERSISTÊNCIA ---
+
     private void carregarDados() {
         if (!Files.exists(Paths.get(FILE_PATH))) return;
 
@@ -48,7 +52,6 @@ public class FuncionarioRepository {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(";");
-                // Deve ter 7 campos de Funcionario + 7 campos de Endereco = 14 campos
                 if (parts.length < 14) continue;
 
                 // Mapeamento de Endereco (parts[7] a parts[13])
@@ -69,15 +72,12 @@ public class FuncionarioRepository {
             }
         } catch (IOException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("Erro ao carregar dados do CSV: " + e.getMessage());
-            // Se houver erro, a lista 'funcionarios' ficará vazia ou parcial
         }
     }
 
-    // Salva a lista atual de funcionários para o arquivo CSV
     private void salvarDados() {
         try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(FILE_PATH))) {
             for (Funcionario f : funcionarios) {
-                // Usa o método toCSV() que implementamos na Model
                 bw.write(f.toCSV());
                 bw.newLine();
             }

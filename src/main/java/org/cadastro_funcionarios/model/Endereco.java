@@ -9,7 +9,6 @@ public class Endereco {
     private String estado;
     private String cep;
 
-    // Construtor Completo
     public Endereco(String logradouro, String numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.logradouro = logradouro;
         this.numero = numero;
@@ -20,17 +19,19 @@ public class Endereco {
         this.cep = cep;
     }
 
-    // --- GETTERS (CRUCIAIS) ---
+    // --- GETTERS (Requisitados por FuncionarioRepository e ReportUtils) ---
     public String getLogradouro() { return logradouro; }
     public String getNumero() { return numero; }
     public String getComplemento() { return complemento; }
     public String getBairro() { return bairro; }
-    public String getCidade() { return cidade; } // CRUCIAL para Relatórios
-    public String getEstado() { return estado; } // CRUCIAL para Relatórios
+    // O ReportUtils precisava deste:
+    public String getCidade() { return cidade; }
+    // O ReportUtils pode precisar deste:
+    public String getEstado() { return estado; }
     public String getCep() { return cep; }
 
-    @Override
-    public String toString() {
-        return logradouro + ";" + numero + ";" + complemento + ";" + bairro + ";" + cidade + ";" + estado + ";" + cep;
+    // Método de persistência CSV (separado por ponto-e-vírgula)
+    public String toCSV() {
+        return String.join(";", logradouro, numero, complemento, bairro, cidade, estado, cep);
     }
 }
