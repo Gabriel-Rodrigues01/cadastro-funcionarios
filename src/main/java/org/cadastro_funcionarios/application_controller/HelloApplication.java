@@ -9,8 +9,8 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // CORREÇÃO: O caminho absoluto garante que o Java encontre o FXML
         FXMLLoader fxmlLoader = new FXMLLoader(
+                // O FXML ESTÁ DENTRO DA SUBPASTA 'view'
                 getClass().getResource("/org/cadastro_funcionarios/view/CadastroFuncionario.fxml")
         );
 
@@ -19,5 +19,5 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    // ... main method
+
 }
