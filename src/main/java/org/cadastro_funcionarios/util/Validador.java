@@ -19,7 +19,7 @@ public class Validador {
     }
 
     // CPF DO FUNCIONARIO
-    // NOTA: Para validação completa de dígitos, use uma biblioteca externa ou uma implementação mais complexa.
+   
     private static final Pattern CPF_PATTERN = Pattern.compile("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$");
     public static boolean validarCPF(String cpf) {
         return cpf != null && CPF_PATTERN.matcher(cpf).matches();
