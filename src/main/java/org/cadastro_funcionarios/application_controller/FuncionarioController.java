@@ -72,7 +72,7 @@ public class FuncionarioController {
             //VALIDAÇÃO DO CSV
             funcionarioService.cadastrar(novoFuncionario);
 
-            //MENSAGEM DE SUCESSO "DEU CERTO ESSA PORRA"
+            //MENSAGEM DE SUCESSO "O TANTO QUE ESSA MISERIA DEMOROU NÃO ESTÁ ESCRTITO"
             statusLabel.setText("Sucesso: Funcionário " + novoFuncionario.getNome() + " cadastrado e salvo no CSV!");
             statusLabel.setStyle("-fx-text-fill: green;");
             limparCampos();
